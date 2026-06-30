@@ -53,7 +53,9 @@
 		</thead>
 		
 		<tbody>
-			<tr th:each="socio : ${listsocio}">
+			<tr th:each="socio : ${listsocio}" 
+				th:attr="data-id=${socio.id}"
+				class="clickable-row" style="cursor:pointer" >
 				<td align="center">[[${socio.nome}]]</td>
 				<td align="center">[[${socio.cognome}]]</td>
 				<td align="center">[[${socio.email}]]</td>
@@ -61,8 +63,10 @@
 				<td>
 					<span th:text="${socio.certificato} != null ? ${socio.certificato.tipo} : 'senza'"></span>
 				</td>
-				<td>
-					<span th:text="${#lists.size(socio.abbonamento) > 0} ? 'abbonamento attivi' : 'senza abbonamento'"></span>
+				<td align="center" class="noselect">
+					<a th:href="@{listAbbonamento(id=${socio.id})}">
+						<span th:text="${#lists.size(socio.abbonamento) > 0} ? 'abbonamento attivi' : 'senza abbonamento'"></span>
+					</a>
 				</td>
 			</tr>
 		</tbody>
@@ -70,6 +74,24 @@
 	
 	</table>
 </div>
+<script>
+	document.addEventListener("DOMContentLoaded", function(){
+		const rows = document.querySelectorAll(".clickable-row");
+		rows.forEach(row => {
+			row.addEventListener("click", () => {
+				if (event.target.closest(".noselect")){
+					return;
+				}
+				const socioId = row.getAttribute("data-id");
+				if (socioId){
+					 window.location.href = `/updateSocio?id=${socioId}`;
+				}			
+			});		
+		});
+	});
+
+</script>
+
 
 </body>
 </html>
