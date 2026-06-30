@@ -11,5 +11,7 @@ public class AttivitaReq {
 	private Integer id;
 	private String descrizione;
 	private Long prezzo;
+	private Integer abbonamentoId;
+	private Integer socioId;
 
 }
