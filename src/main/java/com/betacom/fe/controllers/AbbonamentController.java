@@ -1,14 +1,20 @@
 package com.betacom.fe.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.betacom.fe.dto.input.AbbonamentoReq;
 import com.betacom.fe.dto.input.AttivitaReq;
 import com.betacom.fe.dto.output.AttivitaDTO;
 import com.betacom.fe.dto.output.ResponseDTO;
@@ -76,11 +82,51 @@ public class AbbonamentController {
 		
 		log.debug("attivita size {}", att.size());
 		mav.addObject("listAttivita", att);
-		AttivitaReq req = new AttivitaReq();
-		req.setAbbonamentoId(abbonamentId);
+		AbbonamentoReq req = new AbbonamentoReq();
+		req.setId(abbonamentId);
 		req.setSocioId(socioId);
 		mav.addObject("param", req);
 		
 		return mav;
+	}
+	
+	@PostMapping("saveAbbonamentoAttivita")
+	public String saveAbbonamentoAttivita(@ModelAttribute("param")AbbonamentoReq req , RedirectAttributes ra) {
+		log.debug("saveAbbonamentoAttivita {}", req);
+		
+		ResponseEntity<ResponseDTO>  response = webClient.post()
+				.uri("abbonamento/addAttivita")
+				.bodyValue(req)
+				.exchangeToMono(resp -> resp.toEntity(ResponseDTO.class))
+				.block();
+		log.debug("response : {}", response.getBody().getMsg());
+		
+		if (!response.getStatusCode().is2xxSuccessful()) {
+			ra.addFlashAttribute("errorMsg", response.getBody().getMsg());
+			return "redirect:/aggiungiAttivita?abbonamentId=" + req.getId() + "&socioId=" + req.getSocioId();
+		}
+			
+		return "redirect:/listAbbonamento?id=" + req.getSocioId();
+		
+		
+	}
+	
+	@GetMapping("createAbbonamento")
+	public String createAbbonamento(@RequestParam Integer id) {
+		log.debug("createAbbonamento {}", id);
+		
+		AbbonamentoReq req = new AbbonamentoReq();
+		req.setSocioId(id);
+		req.setDataIscrizione(LocalDate.now());
+		
+		ResponseEntity<ResponseDTO> response = webClient.post()
+				.uri("abbonamento/create")
+				.bodyValue(req)
+				.exchangeToMono(resp -> resp.toEntity(ResponseDTO.class))
+				.block();
+		
+		log.debug("response:{}", response.getBody().getMsg());
+		
+		return "redirect:/listAbbonamento?id=" + id;
 	}
 }

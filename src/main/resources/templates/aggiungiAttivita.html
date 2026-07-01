@@ -13,15 +13,15 @@
 		<form class="form-content" th:action=@{saveAbbonamentoAttivita} th:object=${param}
 			method="post" style="width: 50%; margin:auto;">
 		
-			<select class="form-select" th:field="*{id}">
+			<select class="form-select" th:field="*{attivitaId}">
 				<option value="" selected>Selezionare un attività</option>
 				<option th:each="att : ${listAttivita}"
 					th:value="${att.id}"
 					th:text="${att.descrizione}"></option>			
 			</select>
 		
+			<input type="hidden" th:field="*{id}">
 			<input type="hidden" th:field="*{socioId}">
-			<input type="hidden" th:field="*{abbonamentoId}">
 		
 			<div align="center">
 				<button type="submit" class="btn btn-info mt-2">Aggiungi attività</button>

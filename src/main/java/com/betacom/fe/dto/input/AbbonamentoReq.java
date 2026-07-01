@@ -1,5 +1,7 @@
 package com.betacom.fe.dto.input;
 
+import java.time.LocalDate;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class AbbonamentoReq {
 	private Integer id;
-	private String dataIscrizione;
+	private LocalDate dataIscrizione;
 	private Integer durataValidita;
 	private Integer socioId;
 	private Integer attivitaId;
