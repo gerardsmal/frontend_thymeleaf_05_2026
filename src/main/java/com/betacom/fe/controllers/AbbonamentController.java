@@ -129,4 +129,19 @@ public class AbbonamentController {
 		
 		return "redirect:/listAbbonamento?id=" + id;
 	}
+	
+	@GetMapping("removeAbbonamento")
+	public String removeAbbonamento(@RequestParam Integer abbonamentoId, @RequestParam Integer socioId) {
+		log.debug("removeAbbonamento {} / {}", abbonamentoId, socioId);
+		
+		ResponseDTO response = webClient.delete()
+				.uri("abbonamento/delete/{abbonamentoId}/{socioId}", abbonamentoId, socioId)
+				.retrieve()
+				.bodyToMono(ResponseDTO.class)
+				.block();
+		log.debug("response delete {}", response.getMsg());
+		
+		return "redirect:/listAbbonamento?id=" + socioId;
+		
+	}
 }

@@ -29,7 +29,10 @@
 			<tbody>
 				<tr th:each="abb : ${socio.abbonamento}">
 					<td align="center">
-						<span th:text="${#temporals.format(abb.dataIscrizione, 'dd/MM/yyyy')}">Data inscrizione</span>						
+						<a th:href="@{removeAbbonamento(abbonamentoId=${abb.id}, socioId=${socio.id})}"
+							onclick="return confirm('Sei sicuro di volere rimuovere questo abbonamento?')">	
+							<span th:text="${#temporals.format(abb.dataIscrizione, 'dd/MM/yyyy')}">Data inscrizione</span>
+						</a>						
 					</td>			
 				<td align="center">
 					<ul class="list-unstyled">
