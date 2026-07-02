@@ -17,7 +17,7 @@
 				<option value="" selected>Selezionare un attività</option>
 				<option th:each="att : ${listAttivita}"
 					th:value="${att.id}"
-					th:text="${att.descrizione}"></option>			
+					th:text="|${att.descrizione} - ${#numbers.formatDecimal(att.prezzo,1,2)} €|"></option>			
 			</select>
 		
 			<input type="hidden" th:field="*{id}">

@@ -39,7 +39,7 @@
 						<li th:each="att : ${abb.attivita}">
 							<a th:href="@{removeAbbonamentoAttivita( abbonamentId=${abb.id},attivitaId=${att.id},socioId=${socio.id} )}"
 								onclick="return confirm('Sei sicuro di volere remuovere questa attività?')">
-								<span th:text="${att.descrizione}"></span>
+								<span th:text="|${att.descrizione} - ${#numbers.formatDecimal(att.prezzo,1,2)} €|"></span>
 							</a>
 						</li>
 						<a th:href="@{aggiungiAttivita (abbonamentId=${abb.id}, socioId=${socio.id} )}"
