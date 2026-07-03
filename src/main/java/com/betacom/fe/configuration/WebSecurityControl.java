@@ -22,7 +22,7 @@ public class WebSecurityControl {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 		http.authorizeHttpRequests((requests) -> requests
 				.requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
-				.requestMatchers("/login").permitAll()
+				.requestMatchers("/login", "/registry", "/saveNuovoUtente").permitAll()
 				.anyRequest().authenticated()				
 				)
 				.formLogin((form) -> form
@@ -37,27 +37,27 @@ public class WebSecurityControl {
 		return new BCryptPasswordEncoder();
 	}
 	
-	@Bean
-	UserDetailsService userDetailsService() {
-		
-		List<UserDetails> userDetailsList = new ArrayList<UserDetails>();
-		
-		UserDetails user = 
-				User.withUsername("user")
-					.password(getPaswordEncoder().encode("user").toString())
-					.roles("USER")
-					.build();
-							
-		UserDetails admin = 
-				User.withUsername("admin")
-					.password(getPaswordEncoder().encode("admin").toString())
-					.roles("ADMIN")
-					.build();
-		
-		userDetailsList.add(user);
-		userDetailsList.add(admin);
-		
-		return new InMemoryUserDetailsManager(userDetailsList);
-		
-	}
+//	@Bean
+//	UserDetailsService userDetailsService() {
+//		
+//		List<UserDetails> userDetailsList = new ArrayList<UserDetails>();
+//		
+//		UserDetails user = 
+//				User.withUsername("user")
+//					.password(getPaswordEncoder().encode("user").toString())
+//					.roles("USER")
+//					.build();
+//							
+//		UserDetails admin = 
+//				User.withUsername("admin")
+//					.password(getPaswordEncoder().encode("admin").toString())
+//					.roles("ADMIN")
+//					.build();
+//		
+//		userDetailsList.add(user);
+//		userDetailsList.add(admin);
+//		
+//		return new InMemoryUserDetailsManager(userDetailsList);
+//		
+//	}
 }
